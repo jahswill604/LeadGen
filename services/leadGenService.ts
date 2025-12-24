@@ -10,7 +10,9 @@ export const generateLeads = async (
   const ai = new GoogleGenAI({ apiKey });
 
   // Use Gemini 3.0 Pro (Preview) for advanced reasoning and search capabilities
+
   const model = 'gemini-flash-latest';
+
 
   let prompt = '';
   let systemInstruction = '';
