@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { Lead, SearchParams, EnrichedData } from "../types";
 
 export const generateLeads = async (
-  params: SearchParams, 
+  params: SearchParams,
   apiKey: string
 ): Promise<Lead[]> => {
   if (!apiKey) throw new Error("API Key is required");
@@ -29,12 +29,12 @@ export const generateLeads = async (
       6. Return the data in a strict JSON array format inside a markdown code block.
     `;
 
-    const keywordFocus = params.targetRole 
-      ? `Focus specifically on these intent keywords: "${params.targetRole}"` 
+    const keywordFocus = params.targetRole
+      ? `Focus specifically on these intent keywords: "${params.targetRole}"`
       : `Generate your own high-intent search queries based on the business description.`;
 
-    const excluded = params.keywords 
-      ? `Exclude posts containing: "${params.keywords}"` 
+    const excluded = params.keywords
+      ? `Exclude posts containing: "${params.keywords}"`
       : '';
 
     prompt = `
@@ -104,7 +104,7 @@ export const generateLeads = async (
         Then, find that specific person's Name, Title, and verify their Email.
       `;
     } else {
-      roleInstruction = params.targetRole 
+      roleInstruction = params.targetRole
         ? `Target Decision Maker Role: "${params.targetRole}".`
         : `Target Decision Maker Role: CEO, Founder, or Managing Director.`;
     }
@@ -177,22 +177,22 @@ export const generateLeads = async (
     const text = response.text || "";
     // Regex to extract JSON block which is more robust than simple replacement
     const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/) || text.match(/```\s*([\s\S]*?)\s*```/);
-    
+
     if (jsonMatch) {
-       rawData = JSON.parse(jsonMatch[1]);
+      rawData = JSON.parse(jsonMatch[1]);
     } else {
-       // Fallback: try to parse the whole text if it looks like JSON (e.g. model forgot code blocks)
-       const cleanText = text.trim();
-       if (cleanText.startsWith('[') && cleanText.endsWith(']')) {
-         rawData = JSON.parse(cleanText);
-       }
+      // Fallback: try to parse the whole text if it looks like JSON (e.g. model forgot code blocks)
+      const cleanText = text.trim();
+      if (cleanText.startsWith('[') && cleanText.endsWith(']')) {
+        rawData = JSON.parse(cleanText);
+      }
     }
   } catch (e) {
     console.warn("Failed to parse JSON from model response", e);
     // If parsing fails, we return an empty array or handle gracefully
     rawData = [];
   }
-  
+
   // Transform to match our internal Lead type
   return rawData.map((item: any, index: number) => ({
     ...item,
@@ -209,8 +209,8 @@ export const generateLeads = async (
 };
 
 export const enrichCompanyData = async (
-  lead: Lead, 
-  userProductContext: string | undefined, 
+  lead: Lead,
+  userProductContext: string | undefined,
   apiKey: string
 ): Promise<EnrichedData | null> => {
   if (!apiKey) return null;
@@ -261,7 +261,7 @@ export const enrichCompanyData = async (
 
     const text = response.text || "";
     const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/) || text.match(/```\s*([\s\S]*?)\s*```/);
-    
+
     if (jsonMatch) {
       return JSON.parse(jsonMatch[1]) as EnrichedData;
     } else {
@@ -287,8 +287,8 @@ function calculateQualityScore(item: any, type: string): number {
     let score = 50; // Base score for being found
     if (item.websiteUrl && item.websiteUrl.includes('.')) score += 10;
     if (item.decisionMakers && item.decisionMakers.length > 0) {
-       score += 20;
-       if (item.decisionMakers[0].email) score += 10;
+      score += 20;
+      if (item.decisionMakers[0].email) score += 10;
     }
     if (item.generalEmail && item.generalEmail.includes('@')) score += 10;
     if (item.linkedinUrl) score += 5;
