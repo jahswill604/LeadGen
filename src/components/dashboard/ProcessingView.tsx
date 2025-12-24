@@ -10,6 +10,7 @@ import { exportToCSV } from '../../utils/exportUtils';
 import ResultsTable from './ResultsTable';
 import LeadForm from './LeadForm';
 import ChatView from './ChatView';
+import { ErrorToast, useToast } from '../ErrorToast';
 
 // Inline Logo
 const LeadiumLogoSmall = ({ className = "w-5 h-5" }) => (
@@ -33,7 +34,6 @@ interface ProcessingViewProps {
   onEnrich?: (leadId: string) => void;
   onFeedback?: (rating: number) => void;
   onCancel?: () => void;
-  error?: string;
   onLogout?: () => void;
 }
 
@@ -50,12 +50,12 @@ const ProcessingView: React.FC<ProcessingViewProps> = ({
   onEnrich,
   onFeedback,
   onCancel,
-  error,
   onLogout
 }) => {
   const [activeView, setActiveView] = useState<'config' | 'overview' | 'data' | 'logs' | 'chat'>('config');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { toast, dismissToast } = useToast();
 
   // Feedback State
   const [rating, setRating] = useState(0);
@@ -214,7 +214,7 @@ const ProcessingView: React.FC<ProcessingViewProps> = ({
             {/* Mini Progress */}
             <div className="h-1.5 w-full bg-brand-950 rounded-full overflow-hidden mb-2 relative z-10">
               <div
-                className={`h-full transition-all duration-500 ${isComplete ? 'bg-emerald-500' : error ? 'bg-red-500' : 'bg-gold-500'}`}
+                className={`h-full transition-all duration-500 ${isComplete ? 'bg-emerald-500' : 'bg-gold-500'}`}
                 style={{ width: `${Math.max(5, progress)}%` }}
               />
             </div>
@@ -308,23 +308,10 @@ const ProcessingView: React.FC<ProcessingViewProps> = ({
         {/* Content Viewport */}
         <div className="flex-1 overflow-hidden relative">
 
-          {/* ERROR OVERLAY */}
-          {error && (
-            <div className="absolute inset-0 z-50 bg-slate-900/10 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
-              <div className="bg-white border border-red-100 shadow-2xl rounded-2xl p-8 max-w-md text-center ring-1 ring-slate-200">
-                <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-                  <AlertCircle className="w-8 h-8 text-red-500" />
-                </div>
-                <h3 className="text-xl font-extrabold text-slate-900 mb-2">Pipeline Interrupted</h3>
-                <p className="text-slate-500 text-sm mb-8 leading-relaxed">{error}</p>
-                <button onClick={onReset} className="w-full px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 text-sm font-bold shadow-lg shadow-red-500/30 transition-all">
-                  Reset System
-                </button>
-              </div>
-            </div>
-          )}
+          {/* Toast Notifications */}
+          <ErrorToast toast={toast} onDismiss={dismissToast} />
 
-          <div className="h-full overflow-y-auto custom-scrollbar p-6 md:p-8 scroll-smooth">
+          <div className="h-full overflow-y-auto custom-scrollbar p-4 sm:p-6 md:p-8 scroll-smooth">
             {activeView === 'config' && (
               <div className="max-w-5xl mx-auto py-4">
                 <LeadForm onSubmit={onSearch} isLoading={isLoading} />

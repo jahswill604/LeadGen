@@ -3,6 +3,7 @@ import { Command } from 'lucide-react';
 import ProcessingView from './ProcessingView';
 import { generateLeads, enrichCompanyData } from '../../services/leadGenService';
 import { SearchParams, Lead, LogEntry, AppState, User } from '../../types';
+import { useToast } from '../ErrorToast';
 
 interface DashboardProps {
   user: User;
@@ -15,9 +16,9 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [targetCount, setTargetCount] = useState(0);
   const [scannedCount, setScannedCount] = useState(0); // Track real sources
-  const [error, setError] = useState<string | undefined>(undefined);
   const [lastSearchParams, setLastSearchParams] = useState<SearchParams | null>(null);
 
+  const { showError, showWarning, showSuccess } = useToast();
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const addLog = useCallback((message: string, type: LogEntry['type'] = 'info') => {
@@ -45,7 +46,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
     setLeads([]);
     setLogs([]);
     setScannedCount(0);
-    setError(undefined);
     setLastSearchParams(params);
 
     try {
@@ -116,10 +116,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
     } catch (err: any) {
       if (err.message === "Cancelled" || err.name === "AbortError") {
         addLog('Process stopped by user.', 'warning');
+        showWarning('Process Stopped', 'Lead generation was cancelled by user.');
         setAppState('completed'); // Set to completed so user can see partial results or reset
       } else {
         console.error(err);
-        setError(err.message || "An unexpected error occurred during the pipeline execution.");
+        const errorMessage = err.message || "An unexpected error occurred during the pipeline execution.";
+        showError('Pipeline Error', errorMessage, 8000);
         addLog(`Pipeline crashed: ${err.message}`, 'error');
         setAppState('idle');
       }
@@ -169,10 +171,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
         } else {
           setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: 'complete' } : l));
           addLog(`[${lead.companyName}] Failed to generate deep insights.`, 'error');
+          showWarning('Enrichment Incomplete', `Could not generate deep insights for ${lead.companyName}`);
         }
-      } catch (e) {
+      } catch (e: any) {
         setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: 'failed' } : l));
-        addLog(`[${lead.companyName}] Enrichment error: ${e}`, 'error');
+        addLog(`[${lead.companyName}] Enrichment error: ${e?.message || e}`, 'error');
+        showError('Enrichment Failed', `Error enriching ${lead.companyName}: ${e?.message || 'Unknown error'}`);
       }
     }, 500);
   };
@@ -219,7 +223,6 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
         onEnrich={handleEnrich}
         onFeedback={handleFeedback}
         onCancel={handleCancel}
-        error={error}
         onLogout={onLogout}
       />
     </div>

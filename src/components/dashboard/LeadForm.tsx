@@ -37,55 +37,59 @@ const LeadForm: React.FC<LeadFormProps> = ({ onSubmit, isLoading }) => {
 
   return (
     <div className="w-full animate-in fade-in slide-in-from-bottom-2 duration-500">
-      <div className="bg-white rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200 overflow-hidden">
+      <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200 overflow-hidden">
 
         {/* Header Section */}
-        <div className="p-6 md:p-8 border-b border-slate-100 bg-slate-50/80 flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2.5 bg-indigo-600 rounded-xl text-white shadow-lg shadow-indigo-500/30">
-                <Sparkles className="w-5 h-5" />
+        <div className="p-4 sm:p-6 md:p-8 border-b border-slate-100 bg-slate-50/80 flex flex-col gap-4 sm:gap-6">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                <div className="p-2 sm:p-2.5 bg-indigo-600 rounded-lg sm:rounded-xl text-white shadow-lg shadow-indigo-500/30">
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">New Discovery Campaign</h3>
               </div>
-              <h3 className="text-xl font-bold text-slate-900 tracking-tight">New Discovery Campaign</h3>
+              <p className="text-slate-600 text-xs sm:text-sm max-w-lg leading-relaxed font-medium">
+                Configure your AI agents to scout the web.
+                {searchType === 'b2b'
+                  ? ' Identify active companies and enrich decision maker contact data.'
+                  : ' Scan social platforms for potential customers showing intent.'}
+              </p>
             </div>
-            <p className="text-slate-600 text-sm max-w-lg leading-relaxed font-medium">
-              Configure your AI agents to scout the web.
-              {searchType === 'b2b'
-                ? ' Identify active companies and enrich decision maker contact data.'
-                : ' Scan social platforms for potential customers showing intent.'}
-            </p>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-wide rounded-full border border-emerald-100 self-start shadow-sm">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-            Agents Online
+            <div className="flex items-center gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 bg-emerald-50 text-emerald-700 text-[10px] sm:text-xs font-bold uppercase tracking-wide rounded-full border border-emerald-100 self-start shadow-sm">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+              Agents Online
+            </div>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 md:p-8">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8">
 
           {/* Campaign Type Toggle */}
-          <div className="mb-10">
-            <label className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-4 block">Select Campaign Type</label>
-            <div className="flex p-1.5 bg-slate-100 rounded-xl w-fit border border-slate-200">
+          <div className="mb-8 sm:mb-10">
+            <label className="text-xs font-extrabold text-slate-800 uppercase tracking-widest mb-3 sm:mb-4 block">Select Campaign Type</label>
+            <div className="flex p-1 sm:p-1.5 bg-slate-100 rounded-lg sm:rounded-xl w-full sm:w-fit border border-slate-200">
               <button
                 type="button"
                 onClick={() => setSearchType('b2b')}
-                className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all duration-200 ${searchType === 'b2b'
-                    ? 'bg-white text-indigo-600 shadow-md ring-1 ring-slate-200 transform scale-[1.02]'
-                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3 rounded-md sm:rounded-lg text-xs sm:text-sm font-bold transition-all duration-200 flex-1 sm:flex-initial ${searchType === 'b2b'
+                  ? 'bg-white text-indigo-600 shadow-md ring-1 ring-slate-200 transform scale-[1.02]'
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
                   }`}
               >
-                <Building2 className="w-4 h-4" />
-                B2B Company Search
+                <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden xs:inline">B2B Company Search</span>
+                <span className="xs:hidden">B2B</span>
               </button>
               <button
                 type="button"
                 disabled
-                className="flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all text-slate-400 opacity-60 cursor-not-allowed"
+                className="flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3 rounded-md sm:rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-400 opacity-60 cursor-not-allowed flex-1 sm:flex-initial"
               >
-                <MessageCircle className="w-4 h-4" />
-                B2C Social Listening
-                <span className="ml-2 px-1.5 py-0.5 bg-slate-200 text-slate-500 text-[9px] uppercase tracking-wide rounded font-extrabold">Soon</span>
+                <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden xs:inline">B2C Social</span>
+                <span className="xs:hidden">B2C</span>
+                <span className="ml-1 sm:ml-2 px-1 sm:px-1.5 py-0.5 bg-slate-200 text-slate-500 text-[8px] sm:text-[9px] uppercase tracking-wide rounded font-extrabold">Soon</span>
               </button>
             </div>
           </div>
@@ -241,8 +245,8 @@ const LeadForm: React.FC<LeadFormProps> = ({ onSubmit, isLoading }) => {
                           type="button"
                           onClick={() => setCount(v)}
                           className={`py-3 px-3 text-sm font-bold rounded-xl border transition-all duration-200 ${count === v
-                              ? 'bg-indigo-50 border-indigo-200 text-indigo-700 shadow-sm ring-1 ring-indigo-200'
-                              : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-white hover:border-slate-300 hover:shadow-sm'
+                            ? 'bg-indigo-50 border-indigo-200 text-indigo-700 shadow-sm ring-1 ring-indigo-200'
+                            : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-white hover:border-slate-300 hover:shadow-sm'
                             }`}
                         >
                           {v} Leads
@@ -277,17 +281,18 @@ const LeadForm: React.FC<LeadFormProps> = ({ onSubmit, isLoading }) => {
 
           </div>
 
-          <div className="mt-12 pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+          <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
+            <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-slate-400 bg-slate-50 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-slate-100 order-2 sm:order-1">
               <div className="w-1.5 h-1.5 rounded-full bg-indigo-400"></div>
-              <span>Powered by Google Gemini 3.0 Pro</span>
+              <span className="hidden xs:inline">Powered by Google Gemini 3.0 Pro</span>
+              <span className="xs:hidden">Gemini 3.0 Pro</span>
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
               className={`
-                w-full sm:w-auto px-10 py-4 rounded-xl font-bold text-white shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-3 text-base
+                w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 rounded-lg sm:rounded-xl font-bold text-white shadow-lg sm:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base order-1 sm:order-2
                 ${isLoading
                   ? 'bg-slate-300 cursor-not-allowed shadow-none'
                   : searchType === 'b2c'
@@ -298,16 +303,20 @@ const LeadForm: React.FC<LeadFormProps> = ({ onSubmit, isLoading }) => {
             >
               {isLoading ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Configuring Agents...</span>
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span className="hidden xs:inline">Configuring Agents...</span>
+                  <span className="xs:hidden">Loading...</span>
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-5 h-5 text-indigo-100" />
-                  <span>
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-100" />
+                  <span className="hidden sm:inline">
                     {searchType === 'b2b' ? 'Start Company Discovery' : 'Start Social Scan'}
                   </span>
-                  <ArrowRight className="w-5 h-5 text-indigo-100" />
+                  <span className="sm:hidden">
+                    {searchType === 'b2b' ? 'Start Discovery' : 'Start Scan'}
+                  </span>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-100" />
                 </>
               )}
             </button>
