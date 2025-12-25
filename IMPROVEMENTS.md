@@ -77,8 +77,8 @@ showWarning('Process Stopped', 'Lead generation was cancelled');
 - ✅ **Readable Lists**: Adjusted padding to prevent overcrowding
 
 ##### **D. Structured Data Export**
-- ✅ **Structured CSV**: Generates clean, Excel-compatible `.csv` files using `xlsx` engine
-- ✅ **Formatted Tables**: Ensures proper quoting and character escaping
+- ✅ **Excel Export**: Generates `.xlsx` files to support structured tables, which is not possible with CSV
+- ✅ **Formatted Tables**: Auto-adjusted column widths and correct cell formatting
 - ✅ **Clean Data**: Removed internal IDs for professional export quality
 
 ##### **E. CSS Enhancements (`src/styles/index.css`)**
