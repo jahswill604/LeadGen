@@ -6,7 +6,7 @@ import {
   MessageSquare, Menu, X, LogOut, Star, ThumbsUp, Bell, Search, Sparkles, StopCircle, PlayCircle
 } from 'lucide-react';
 import { Lead, LogEntry, SearchParams, User } from '../../types';
-import { exportToExcel } from '../../utils/exportUtils';
+import { exportToCSV } from '../../utils/exportUtils';
 import ResultsTable from './ResultsTable';
 import LeadForm from './LeadForm';
 import ChatView from './ChatView';
@@ -276,11 +276,11 @@ const ProcessingView: React.FC<ProcessingViewProps> = ({
                     <span className="hidden md:inline">Reset</span>
                   </button>
                   <button
-                    onClick={() => exportToExcel(leads)}
+                    onClick={() => exportToCSV(leads)}
                     className="px-4 py-2 text-white bg-brand-600 hover:bg-brand-700 border border-transparent rounded-lg shadow-md shadow-brand-600/20 font-bold flex items-center gap-2 text-xs transition-all transform active:scale-95"
                   >
                     <Download className="w-3.5 h-3.5" />
-                    <span className="hidden md:inline">Export Excel</span>
+                    <span className="hidden md:inline">Export CSV</span>
                   </button>
                 </>
               )}

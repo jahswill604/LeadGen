@@ -1,7 +1,7 @@
 import { Lead } from '../types';
 import * as XLSX from 'xlsx';
 
-export const exportToExcel = (leads: Lead[]) => {
+export const exportToCSV = (leads: Lead[]) => {
   if (leads.length === 0) return;
 
   const isB2C = leads[0].leadType === 'b2c';
@@ -59,5 +59,6 @@ export const exportToExcel = (leads: Lead[]) => {
   XLSX.utils.book_append_sheet(wb, ws, 'Leads');
 
   // 5. Generate File Download
-  XLSX.writeFile(wb, `leads_export_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  // Export as CSV (using xlsx handling for proper escaping)
+  XLSX.writeFile(wb, `leads_export_${new Date().toISOString().slice(0, 10)}.csv`, { bookType: 'csv' });
 };
