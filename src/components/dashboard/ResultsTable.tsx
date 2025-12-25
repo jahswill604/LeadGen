@@ -75,30 +75,32 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ leads, onEnrich }) => {
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       {/* Toolbar */}
-      <div className="px-6 py-3 border-b border-slate-200 bg-white flex justify-between items-center shrink-0">
+      <div className="px-4 py-3 sm:px-6 border-b border-slate-200 bg-white flex justify-between items-center shrink-0 sticky top-0 z-20">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">View Mode:</span>
+          <span className="hidden sm:inline text-xs font-bold text-slate-500 uppercase tracking-wider">View Mode:</span>
           <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200">
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-md transition-all ${viewMode === 'list' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+              className={`p-1.5 sm:p-2 rounded-md transition-all ${viewMode === 'list' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+              title="List View"
             >
               <List className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+              className={`p-1.5 sm:p-2 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+              title="Grid View"
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
           </div>
         </div>
-        <div className="text-xs text-slate-400 font-medium">
-          Showing {leads.length} results
+        <div className="text-[10px] sm:text-xs text-slate-400 font-medium bg-slate-50 px-2 py-1 rounded border border-slate-100">
+          {leads.length} results
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar bg-slate-50/50 p-6">
+      <div className="flex-1 overflow-y-auto custom-scrollbar bg-slate-50/50 p-4 sm:p-6">
 
         {/* GRID VIEW */}
         {viewMode === 'grid' && (
@@ -215,17 +217,17 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ leads, onEnrich }) => {
                   {/* Summary Row (Clickable) */}
                   <div
                     onClick={() => toggleExpand(lead.id)}
-                    className="flex items-center justify-between p-5 cursor-pointer select-none"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 cursor-pointer select-none gap-4 transition-colors hover:bg-slate-50/50"
                   >
                     {/* Basic Info to Identify */}
-                    <div className="flex items-center gap-6">
-                      <span className="text-slate-300 font-mono text-xs font-bold w-6">#{index + 1}</span>
-                      <div className="flex items-center gap-5">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors shadow-sm border ${isExpanded ? 'bg-brand-50 border-brand-100 text-brand-600' : 'bg-slate-50 border-slate-100 text-slate-500'}`}>
-                          {isB2C ? <MessageCircle className="w-6 h-6" /> : <Building2 className="w-6 h-6" />}
+                    <div className="flex items-start sm:items-center gap-3 sm:gap-6 w-full sm:w-auto">
+                      <span className="hidden sm:block text-slate-300 font-mono text-xs font-bold w-6">#{index + 1}</span>
+                      <div className="flex items-start sm:items-center gap-3 sm:gap-5 flex-1 min-w-0">
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-colors shadow-sm border shrink-0 ${isExpanded ? 'bg-brand-50 border-brand-100 text-brand-600' : 'bg-slate-50 border-slate-100 text-slate-500'}`}>
+                          {isB2C ? <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" /> : <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />}
                         </div>
-                        <div className="max-w-[180px] md:max-w-md">
-                          <h4 className={`font-bold text-base transition-colors truncate ${isExpanded ? 'text-brand-700' : 'text-slate-900'}`}>
+                        <div className="flex-1 min-w-0 md:max-w-md">
+                          <h4 className={`font-bold text-sm sm:text-base transition-colors truncate ${isExpanded ? 'text-brand-700' : 'text-slate-900'}`}>
                             {lead.companyName}
                           </h4>
                           <div className="flex items-center gap-3 text-xs text-slate-500 mt-1.5 font-medium">
@@ -249,18 +251,18 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ leads, onEnrich }) => {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-6 md:gap-10">
+                    <div className="flex items-center justify-between sm:justify-end gap-6 md:gap-10 w-full sm:w-auto mt-2 sm:mt-0 pl-[3.25rem] sm:pl-0">
                       {/* Quality/Sentiment Score */}
-                      <div className="flex flex-col items-end min-w-[100px]">
-                        <span className={`text-xs font-bold uppercase tracking-wide mb-1.5 ${lead.qualityScore > 75 ? 'text-emerald-600' : lead.qualityScore > 50 ? 'text-amber-600' : 'text-slate-500'}`}>
+                      <div className="flex flex-col items-start sm:items-end min-w-[100px]">
+                        <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-wide mb-1.5 ${lead.qualityScore > 75 ? 'text-emerald-600' : lead.qualityScore > 50 ? 'text-amber-600' : 'text-slate-500'}`}>
                           {isB2C ? 'High Intent' : `${lead.qualityScore}% Match`}
                         </span>
-                        <div className="w-24 h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                        <div className="w-full sm:w-24 h-1.5 rounded-full bg-slate-100 overflow-hidden">
                           <div className={`h-full rounded-full ${lead.qualityScore > 75 ? 'bg-emerald-500' : lead.qualityScore > 50 ? 'bg-amber-500' : 'bg-slate-400'}`} style={{ width: `${lead.qualityScore}%` }}></div>
                         </div>
                       </div>
 
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 transition-all duration-300 ${isExpanded ? 'rotate-180 bg-brand-100 text-brand-600' : 'text-slate-400 hover:bg-slate-100'}`}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 transition-all duration-300 shrink-0 ${isExpanded ? 'rotate-180 bg-brand-100 text-brand-600' : 'text-slate-400 hover:bg-slate-100'}`}>
                         <ChevronDown className="w-5 h-5" />
                       </div>
                     </div>
@@ -268,7 +270,7 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ leads, onEnrich }) => {
 
                   {/* Expanded Dropdown Content */}
                   {isExpanded && (
-                    <div className="border-t border-slate-100 px-5 py-6 sm:pl-[6.5rem] bg-slate-50/30 rounded-b-xl animate-in slide-in-from-top-2 fade-in duration-300">
+                    <div className="border-t border-slate-100 px-4 sm:px-5 py-6 sm:pl-[6.5rem] bg-slate-50/30 rounded-b-xl animate-in slide-in-from-top-2 fade-in duration-300">
                       <div className="space-y-6">
 
                         {/* Action Bar */}
@@ -280,12 +282,13 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ leads, onEnrich }) => {
                                 onEnrich?.(lead.id);
                               }}
                               disabled={lead.status === 'enriching'}
-                              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-sm border group transform hover:-translate-y-0.5
-                                        ${lead.status === 'enriching'
+                              className={`
+                                w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-sm border group transform hover:-translate-y-0.5
+                                ${lead.status === 'enriching'
                                   ? 'bg-slate-100 text-slate-400 cursor-not-allowed border-slate-200'
                                   : 'bg-white hover:bg-indigo-50 text-indigo-700 border-indigo-100 hover:border-indigo-200 shadow-indigo-100'
                                 }
-                                    `}
+                              `}
                             >
                               {lead.status === 'enriching' ? (
                                 <>
@@ -300,9 +303,7 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ leads, onEnrich }) => {
                               )}
                             </button>
                           </div>
-                        )}
-
-                        {isB2C ? (
+                        )}            {isB2C ? (
                           // --- B2C EXPANDED VIEW ---
                           <>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6 border-b border-slate-200/60">
@@ -525,14 +526,16 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ leads, onEnrich }) => {
 
                       </div>
                     </div>
-                  )}
+                  )
+                  }
                 </div>
               );
             })}
           </div>
-        )}
-      </div>
-    </div>
+        )
+        }
+      </div >
+    </div >
   );
 };
 

@@ -69,7 +69,19 @@ showWarning('Process Stopped', 'Lead generation was cancelled');
 - ✅ **Mobile-optimized scrollbars**: Thinner (4px) on mobile devices
 - ✅ **Toast positioning**: Fixed top-right with mobile-safe margins
 
-##### **C. CSS Enhancements (`src/styles/index.css`)**
+##### **C. Data Warehouse / Results (`ResultsTable.tsx`)**
+- ✅ **Smart Stacking**: Summary rows switch from `flex-row` to `flex-col` on mobile
+- ✅ **Space Optimization**: Hidden elements (index, decorative icons) on small screens
+- ✅ **Touch Targets**: Full-width buttons on mobile for easier interaction
+- ✅ **Adaptive Expansion**: Indented content on desktop, full-width on mobile
+- ✅ **Readable Lists**: Adjusted padding to prevent overcrowding
+
+##### **D. Structured Data Export**
+- ✅ **Excel Support**: Switched from basic CSV to structured `.xlsx` files
+- ✅ **Formatted Tables**: Auto-adjusted column widths for better readability
+- ✅ **Clean Data**: Removed internal IDs and formatting artifacts from export
+
+##### **E. CSS Enhancements (`src/styles/index.css`)**
 ```css
 /* Mobile-friendly scrollbar */
 @media (max-width: 640px) {
